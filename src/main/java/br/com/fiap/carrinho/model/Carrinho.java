@@ -33,7 +33,7 @@ public class Carrinho {
     }
 
 
-    public Collection<Produto> getPprodutos() {
+    public Collection<Produto> getProdutos() {
         return Collections.unmodifiableCollection(this.produtos);
     }
 
@@ -42,29 +42,15 @@ public class Carrinho {
         return criacao;
     }
 
-    public Carrinho setCriacao(LocalDateTime criacao) {
-        this.criacao = criacao;
-        return this;
-    }
 
     public LocalDateTime getEncerramento() {
         return encerramento;
     }
 
-    public Carrinho setEncerramento(LocalDateTime encerramento) {
-        this.encerramento = encerramento;
-        return this;
-    }
 
     public double getValorTotal() {
         return valorTotal;
     }
-
-    private Carrinho setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-        return this;
-    }
-
 
     public Long getId() {
         return id;
@@ -97,6 +83,7 @@ public class Carrinho {
     }
 
     public double calcValorTotal() {
+        valorTotal = 0;
         double tot = 0;
         for (Produto p : produtos) {
             var v = calcularValorTotal((ProdutoPerecivel) p);
@@ -126,7 +113,6 @@ public class Carrinho {
 
         var vlr = p.getPreco();
         double desc = vlr * desconto / 100;
-
         return p.getPreco() - desc;
     }
 
