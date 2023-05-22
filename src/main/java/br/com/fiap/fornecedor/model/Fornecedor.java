@@ -2,6 +2,9 @@ package br.com.fiap.fornecedor.model;
 
 import br.com.fiap.pessoa.model.Pessoa;
 
+/**
+ * Representa um fornecedor
+ */
 public class Fornecedor {
 
     private Long id;
