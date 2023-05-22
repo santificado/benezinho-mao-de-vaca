@@ -55,11 +55,16 @@ Veja o Diagrama de Classes abaixo (as classes já foram criadas):
 
 **Você deverá:**
 
-**Faça o fork do projeto do github :**
+**Fazer o fork do projeto do github, após o professor criar a atividade no Teams,** ( previsto para às 14h do dia 22/05/2023 ). Caso já tenha feito o fork antes dessa data e horário, você deverá fazer o **Synk Fork** conforme imagem abaixo:
+
+<img src="documentacao/synk.png">
 
 https://github.com/Benefrancis/benezinho-mao-de-vaca.git
 
 Caso o github esteja indisponível, você deverá pegar o projeto no diretório compartilhado.
+
+
+
 
 1. **(0,5 Ponto)** acessar o arquivo persistence.xml e alterar as configurações da **persistence-unit** para que seja possível conectar-se ao banco de dados Oracle da FIAP com o seu usuário e senha (manter o seu usuário e senha ativo é sua responsabilidade). Não utilize o usuário e senha de outro aluno. Caso tenha problema para autenticar, comunique o professor.
 
