@@ -1,12 +1,18 @@
 package br.com.fiap.produto.model;
 
 import br.com.fiap.fornecedor.model.Fornecedor;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
+@DiscriminatorValue("PP")
 public class ProdutoPerecivel extends Produto {
 
+    @Column(name = "DT_VALIDADE")
     private Integer diasValidade;
 
     public ProdutoPerecivel() {

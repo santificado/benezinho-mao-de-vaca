@@ -5,35 +5,49 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(
+        name = "TB_PESSOA_JURIDICA",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_CNPJ", columnNames = "CNPJ")
+        }
+)
+@DiscriminatorValue("PJ")
 public class PessoaJuridica extends Pessoa {
+    @Column(name = "CNPJ")
     private String CNPJ;
+
+    @ManyToMany
+    @JoinTable(
+            name = "TB_PESSOA_JURIDICA_SOCIOS",
+            joinColumns = @JoinColumn(name = "pessoa_juridica_id"),
+            inverseJoinColumns = @JoinColumn(name = "pessoa_id")
+    )
     private Set<Pessoa> socios = new LinkedHashSet<>();
 
     public String getCNPJ() {
         return CNPJ;
     }
 
-    public PessoaJuridica setCNPJ(String CNPJ) {
+    public void setCNPJ(String CNPJ) {
         this.CNPJ = CNPJ;
-        return this;
     }
 
     public Set<Pessoa> getSocios() {
         return Collections.unmodifiableSet(socios);
     }
 
-    public PessoaJuridica addSocio(Pessoa pessoa) {
+    public void addSocio(Pessoa pessoa) {
         if (Objects.nonNull(pessoa)) {
             if (pessoa.equals(this)) throw new RuntimeException("Eu não posso ser o meu próprio sócio");
             this.socios.add(pessoa);
         }
-        return this;
     }
 
-    public PessoaJuridica removerSocio(Pessoa pessoa) {
+    public void removerSocio(Pessoa pessoa) {
         this.socios.remove(pessoa);
-        return this;
     }
 
     @Override

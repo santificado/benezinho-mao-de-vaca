@@ -1,14 +1,42 @@
 package br.com.fiap.pessoa.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "TB_PESSOA_FISICA",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_CPF", columnNames = "NR_CPF")
+        })
+@DiscriminatorValue("PF")
 public class PessoaFisica extends Pessoa {
+    @Column(name = "NR_CPF")
     private String CPF;
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    private Set<PessoaFisica> filhos = new LinkedHashSet<>(); //Os meus filhos
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_FILHOS",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "ID_PAI",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(name = "FK_PAI_FILHO")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "ID_FILHO",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(name = "FK_FILHO_PAI")
+                    )
+            }
+    )
+    private Set<PessoaFisica> filhos = new LinkedHashSet<>();
 
 
     public PessoaFisica() {
@@ -20,15 +48,7 @@ public class PessoaFisica extends Pessoa {
         this.filhos = filhos;
     }
 
-    /**
-     * Método para adicionar um filho para a pessoa
-     * <p>
-     * Aqui eu, ou seja, this (PessoaFisica) é pai ou mãe.
-     * O atributo "filhos" é o conjunto de filhos que eu tenho.
-     *
-     * @param filho
-     * @return PessoaFisica
-     */
+
     public PessoaFisica addFilho(PessoaFisica filho) {
         if (filho.equals(this)) throw new RuntimeException("Eu não posso ser ao mesmo tempo pai e filho");
         //Adiciono um filho meu
@@ -36,12 +56,6 @@ public class PessoaFisica extends Pessoa {
         return this;
     }
 
-    /**
-     * Método para remover um filho da pessoa
-     *
-     * @param filho
-     * @return PessoaFisica
-     */
     public PessoaFisica removeFilho(PessoaFisica filho) {
         this.filhos.remove(filho);
         return this;
@@ -66,11 +80,6 @@ public class PessoaFisica extends Pessoa {
         return this;
     }
 
-    /**
-     * Getter imutável para a listagem de filhos
-     *
-     * @return
-     */
     public Set<PessoaFisica> getFilhos() {
         return Collections.unmodifiableSet(filhos);
     }

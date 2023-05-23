@@ -8,14 +8,21 @@ import br.com.fiap.pessoa.model.PessoaFisica;
 import br.com.fiap.pessoa.model.Sexo;
 import br.com.fiap.produto.model.ProdutoPerecivel;
 import br.com.fiap.venda.model.Venda;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("oracle-fiap");
+        EntityManager manager = factory.createEntityManager();
 
         PessoaFisica chicoBento = new PessoaFisica();
         chicoBento.setSexo(Sexo.MASCULINO)
@@ -68,6 +75,27 @@ public class Main {
 
         System.out.println(venda);
 
+
+        Long id = 1L;
+        findByID(manager, id);
+        findAll(manager);
+
+        manager.getTransaction().begin();
+        manager.persist(venda);
+        manager.getTransaction().commit();
+
+    }
+
+
+    private static void findAll(EntityManager manager) {
+        String jpql = "From Venda";
+        List<Venda> list = manager.createQuery(jpql).getResultList();
+        list.stream().forEach(System.out::println);
+    }
+
+    private static void findByID(EntityManager manager, long id) {
+        Venda venda = manager.find(Venda.class, id);
+        System.out.println(venda);
     }
 
     private static String getCpf() {

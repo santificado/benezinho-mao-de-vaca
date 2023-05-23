@@ -1,17 +1,29 @@
 package br.com.fiap.venda.model;
 
 import br.com.fiap.carrinho.model.Carrinho;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "TB_VENDA")
 public class Venda {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_VENDA")
+    @SequenceGenerator(name = "SQ_VENDA", sequenceName = "SQ_VENDA")
+    @Column(name = "ID_VENDA")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "ID_CARRINHO", referencedColumnName = "ID_CARRINHO",
+            foreignKey = @ForeignKey(name = "FK_VENDA_CARRINHO", value = ConstraintMode.CONSTRAINT))
     private Carrinho carrinho;
 
+    @Column(name = "DT_VENDA")
     private LocalDateTime data;
 
+    @Column(name = "VALOR_VENDA")
     private double Valor;
 
     public Venda() {
